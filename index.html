@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Again Food Chef</title>
+    <link rel="stylesheet" type="text/css" href="again_food_chef.css" />
+  </head>
+  <body>
+    <form action="" id="form1">
+      <div id="firstdiv">
+        <h1>Food Chef</h1>
+        <label><b>Enter Dish name :</b></label> <br /><br />
+        <input
+          type="text"
+          name="dish1"
+          placeholder="Enter Dish Name here :"
+          id="dish"
+        />
+        <p id="dishname1"></p>
+        <br />
+        <label><b>Enter Ingrediants (can be more then 1)</b></label
+        ><br />
+        <br /><input
+          type="text"
+          name=""
+          placeholder="Enter ingredients name :"
+          id="ingre"
+        />
+        <p id="dishingre"></p>
+        <br />
+        <input
+          type="number"
+          name=""
+          placeholder="Enter quantity in grams :"
+          id="ingreqty"
+        />
+        <p id="dishqty"></p>
+        <br />
+        <input
+          type="button"
+          name=""
+          value="Add ingredients"
+          id="addingredients"
+        />
+        <br /><br />
+        <label><b>Enter Recipe :</b></label> <br /><br />
+        <input
+          type="text"
+          name=""
+          id="recipe"
+          placeholder="Enter Recipe here :"
+        />
+        <p id="dishrecipe1"></p>
+
+        <label><b>Select Image here :</b></label
+        ><br /><br />
+        <input type="file" name="" id="selectimage" /> <br />
+        <p id="dishimage"></p>
+        <input type="button" name="" id="update" value="Update" />
+
+        <input
+          type="submit"
+          onclick="event.preventDefault()"
+          name=""
+          id="submit"
+        />
+        <input
+          type="button"
+          name=""
+          id="allrecord"
+          onclick="showal()"
+          value="All Record"
+        />
+      </div>
+
+      <hr />
+      <div id="menu">
+        <label for=""><b>Today's Menu :</b></label>
+        <ol id="availabledishs"></ol>
+        <input
+          type="search"
+          name=""
+          id="btn1"
+          onkeydown="serchbar()"
+          placeholder="Enter Dish Name For Search :"
+        />
+        <input type="button" name="" id="search" value="Search" />
+      </div>
+      <div id="tabldiv">
+        <label><b>Dish Name Is :</b></label>
+        <p id="namedish"></p>
+        <br />
+        <label><b>Dish Image :</b></label>
+        <img src="" id="displayimage" accept="image/*" /> <br /><br />
+        <label for="" id="path"></label><br /><br />
+        <label><b>Recipe :</b></label>
+        <p id="dishrecipe"></p>
+        <br />
+        <h3>Ingredients :</h3>
+        <ol id="result"></ol>
+
+        <input type="button" name="" id="edit1" value="Edit" />
+        <input type="button" name="" id="previous" value="<" title="Previous" />
+        <input type="button" name="" id="next" value=">" title="Next" />
+        <input
+          type="button"
+          name=""
+          id="delete"
+          value="Delete"
+          title="Delete Dish"
+        />
+        <input type="button" name="" id="cancel" value="Cancel" />
+      </div>
+    </form>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+  <script type="text/javascript">
+    var ingredient = [],
+      qty = [],
+      allrecord = [],
+      cp = 0;
+    $(document).ready(function () {
+      allrecord = JSON.parse(localStorage.getItem("food"));
+      fileload();
+      console.log("Form Ready ");
+
+      //--------------------------------INGREDIENTS-ADDING-------------------------//
+      $("#addingredients").click(function () {
+        var Ingredient = $("#ingre").val(),
+          Ingredientqty = $("#ingreqty").val();
+
+        var obj = {
+          gredient: Ingredient,
+          gredientqty: Ingredientqty,
+        };
+        ingredient.push(obj);
+        console.log(ingredient);
+
+        $("#ingre").val("");
+        $("#ingreqty").val("");
+      });
+      var x = "";
+      //----------------------IMAGE-SELECT--------------------------------//
+
+      $("#selectimage").change(function (event) {
+        x = URL.createObjectURL(event.target.files[0]);
+        console.log("path is iii" + x);
+        console.log(event);
+      });
+      //--------------------------SUBMIT-(ALL-RECORD-ADDING)------------------------//
+      $("#submit").click(function () {
+        var Dish = $("#dish").val(),
+          Recipe = $("#recipe").val(),
+          ImagePath = x;
+
+        var alldata = {
+          dish: Dish,
+          recipe: Recipe,
+          imagePath: ImagePath,
+          ingredients: ingredient,
+        };
+        if (
+          Dish != "" &&
+          Recipe != "" &&
+          ImagePath != "" &&
+          ingredient.length != ""
+        ) {
+          var data = $("#dish").val();
+          var patteren = /^[A-Za-z0-9-]+$/;
+          var valid = patteren.test(data);
+          if (valid) {
+            allrecord.push(alldata);
+            console.log(allrecord);
+            localStorage.setItem("food", JSON.stringify(allrecord));
+
+            $("#ingre").val("");
+            $("#ingreqty").val("");
+            $("#dish").val("");
+            $("#recipe").val("");
+            $("#selectimage").val("");
+            ingredient = [];
+            console.log("Now Array is : " + ingredient);
+            fileload();
+          } else {
+            alert("special characters not allowed");
+          }
+        } else {
+          alert("All Fields Required");
+        }
+      });
+
+      var p = 1;
+      //----------------------NEXT-DISH----------------------//
+      $("#next").click(function () {
+        cp = p;
+        var tyu = "";
+        var getdata = JSON.parse(localStorage.getItem("food"));
+        if (p == getdata.length) {
+          $("#next").prop("disabled", true);
+        } else {
+          $("#previous").prop("disabled", false);
+          $("#namedish").html(getdata[p].dish);
+          $("#path").html(getdata[p].imagePath);
+          $("#dishrecipe").html(getdata[p].recipe);
+          for (let i = 0; i < getdata[p].ingredients.length; i++) {
+            tyu += `<li>${getdata[p].ingredients[i].gredient}&nbsp&nbsp&nbsp&nbsp${getdata[p].ingredients[i].gredientqty}&nbspgram</li>`;
+          }
+          $("#result").html(tyu);
+          p++;
+          console.log("PPPPPPPPPPPPPPPPPPPPPPPPP : " + p);
+        }
+      });
+
+      //----------------PREVIOUS-PAGE--------------------------//
+      $("#previous").click(function () {
+        q = p - 1;
+        var tyu = "";
+        console.log(p);
+        var getdata = JSON.parse(localStorage.getItem("food"));
+        console.log("q is : " + q);
+        cp = q;
+
+        if (q == -1) {
+          $("#previous").prop("disabled", true);
+        } else {
+          $("#next").prop("disabled", false);
+          $("#namedish").html(getdata[q].dish);
+          $("#path").html(getdata[q].imagePath);
+          $("#dishrecipe").html(getdata[q].recipe);
+          for (let i = 0; i < getdata[q].ingredients.length; i++) {
+            tyu += `<li>${getdata[q].ingredients[i].gredient}&nbsp&nbsp&nbsp&nbsp${getdata[q].ingredients[i].gredientqty}&nbspgram</li>`;
+          }
+          $("#result").html(tyu);
+          p--;
+        }
+      });
+
+      //------------------------DELETING-DATA--------------------------//
+      $("#delete").click(function () {
+        var gettemp = JSON.parse(localStorage.getItem("food"));
+        if (confirm("Are you sure to Delete this Detail ?")) {
+          gettemp.splice(cp, 1);
+          console.log("cp is : " + cp);
+          localStorage.setItem("food", JSON.stringify(gettemp));
+          if (gettemp.length == "") {
+            // $("#tabldiv").hide();
+          }
+        }
+        showal();
+        fileload();
+      });
+
+      var temparr = [];
+      //--------------------------------UPDATING-DATA-------------------------//
+      $("#update").click(function () {
+        var temp = JSON.parse(localStorage.getItem("food"));
+        var Ingredient = $("#ingre").val(),
+          Ingredientqty = $("#ingreqty").val();
+
+        var obj = {
+          gredient: Ingredient,
+          gredientqty: Ingredientqty,
+        };
+        temparr.push(obj);
+        temp[cp].dish = $("#dish").val();
+        temp[cp].ingredients.push(obj);
+        localStorage.setItem("food", JSON.stringify(temp));
+        showal();
+        $("#ingre").val("");
+        $("#ingreqty").val("");
+        $("#dish").val("");
+        $("#recipe").val("");
+        $("#selectimage").val("");
+        fileload();
+        $("#edit1").show();
+        $("#update").hide();
+        $("#cancel").hide();
+        $("#submit").show();
+      });
+    });
+    $("#allrecord").click(function () {
+      $("#tabldiv").toggle();
+    });
+    //--------------------------------ALL-DATA-------------------------//
+    function showal() {
+      //   $("#tabldiv").show();
+      var tyu = "";
+      var getdata = JSON.parse(localStorage.getItem("food"));
+
+      if (getdata.length == "") {
+        alert("No Dish Found");
+        $("#namedish").html("");
+        $("#dishrecipe").html("");
+        $("#displayimage").html("");
+        $("#result").html("");
+      } else {
+        $("#namedish").html(getdata[0].dish);
+        $("#path").html(getdata[0].imagePath);
+        $("#dishrecipe").html(getdata[0].recipe);
+        for (let i = 0; i < getdata[0].ingredients.length; i++) {
+          tyu += `<li>${getdata[0].ingredients[i].gredient}&nbsp&nbsp&nbsp&nbsp${getdata[0].ingredients[i].gredientqty}&nbspgram</li>`;
+        }
+        $("#result").html(tyu);
+      }
+    }
+
+    //------------------Today's Menu---------------------//
+
+    function fileload() {
+      var loc = JSON.parse(localStorage.getItem("food"));
+      var data = $("#availabledishs");
+      var trow = "";
+      for (let i = 0; i < loc.length; i++) {
+        trow += `<li>${loc[i].dish}</li>`;
+      }
+      data.html(trow);
+    }
+    //-------------------SEARCH-----------------------//
+    $("#search").click(function () {
+      var srdata = JSON.parse(localStorage.getItem("food"));
+      var valo = $("#btn1").val(),
+        tyu = "";
+      if (valo == "") {
+        alert("Name is Required ");
+      } else {
+        for (let x in srdata) {
+          if (srdata[x].dish == valo) {
+            cp = x;
+            $("#namedish").html(srdata[x].dish);
+            $("#path").html(srdata[x].imagePath);
+            $("#dishrecipe").html(srdata[x].recipe);
+            for (let i = 0; i < srdata[x].ingredients.length; i++) {
+              tyu += `<li>${srdata[x].ingredients[i].gredient}&nbsp&nbsp&nbsp&nbsp${srdata[x].ingredients[i].gredientqty}&nbspgram</li>`;
+            }
+            $("#result").html(tyu);
+          }
+        }
+      }
+    });
+    //-----------------------Edit-------------------------//
+    $("#edit1").click(function () {
+      var temp = JSON.parse(localStorage.getItem("food"));
+      var l = temp[cp].ingredients.length;
+      console.log(
+        "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj : " + l
+      );
+      $("#addingredients").hide();
+      $("#submit").hide();
+      $("#edit1").hide();
+      $("#update").show();
+      $("#cancel").show();
+
+      $("#dish").val(temp[cp].dish);
+      $("#ingre").val(temp[cp].ingredients[l - 1].gredient);
+      $("#ingreqty").val(temp[cp].ingredients[l - 1].gredientqty);
+      $("#recipe").val(temp[cp].recipe);
+      // $("#selectimage").val(temp[cp].imagePath);
+    });
+    $("#cancel").click(function () {
+      $("#edit1").show();
+      $("#update").hide();
+      $("#cancel").hide();
+      $("#addingredients").show();
+      $("#submit").show();
+    });
+    //-------------------ON-SEARCH-BAR-FUNCTIONALITY----------------------------//
+    function serchbar() {
+      var srdata = JSON.parse(localStorage.getItem("food"));
+      var valo = $("#btn1").val(),
+        tyu = "";
+      for (let x in srdata) {
+        if (srdata[x].dish == valo) {
+          cp = x;
+          $("#namedish").html(srdata[x].dish);
+          $("#path").html(srdata[x].imagePath);
+          $("#dishrecipe").html(srdata[x].recipe);
+          for (let i = 0; i < srdata[x].ingredients.length; i++) {
+            tyu += `<li>${srdata[x].ingredients[i].gredient}&nbsp&nbsp&nbsp&nbsp${srdata[x].ingredients[i].gredientqty}&nbspgram</li>`;
+          }
+          $("#result").html(tyu);
+        }
+      }
+    }
+  </script>
+</html>
