@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"
+    />
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+  </head>
+  <body>
+    <script>
+      function PreviewImage() {
+        var oFReader = new FileReader();
+        oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+        oFReader.onload = function (oFREvent) {
+          var sizef = document.getElementById("uploadImage").files[0].size;
+          document.getElementById("uploadPreview").src = oFREvent.target.result;
+          document.getElementById("uploadImageValue").value =
+            oFREvent.target.result;
+        };
+      }
+      jQuery(document).ready(function () {
+        $("#viewSource").click(function () {
+          var imgUrl = $("#uploadImageValue").val();
+          alert(imgUrl);
+        });
+      });
+    </script>
+    <div>
+      <input
+        type="hidden"
+        id="uploadImageValue"
+        name="uploadImageValue"
+        value=""
+      />
+      <img id="uploadPreview" style="width: 150px; height: 150px" /><br />
+      <input
+        id="uploadImage"
+        style="width: 120px"
+        type="file"
+        size="10"
+        accept="image/jpeg,image/gif, image/png"
+        name="myPhoto"
+        onchange="PreviewImage();"
+      />
+    </div>
+    <a href="#" id="viewSource">Source file</a>
+  </body>
+</html>

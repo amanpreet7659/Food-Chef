@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Again Food Chef</title>
+    <link rel="stylesheet" type="text/css" href="css/again_food_chef.css" />
+  </head>
+  <body>
+    <form action="" id="form1">
+      <div id="firstdiv">
+        <h1>Food Chef</h1>
+        <label><b>Enter Dish name :</b></label> <br /><br />
+        <input
+          type="text"
+          name="dish1"
+          placeholder="Enter Dish Name here :"
+          id="dish"
+        />
+        <p id="dishname1"></p>
+        <br />
+        <label><b>Enter Ingrediants (can be more then 1)</b></label
+        ><br />
+        <br /><input
+          type="text"
+          name=""
+          placeholder="Enter ingredients name :"
+          id="ingre"
+        />
+        <p id="dishingre"></p>
+        <br />
+        <input
+          type="number"
+          name=""
+          placeholder="Enter quantity in grams :"
+          id="ingreqty"
+        />
+        <p id="dishqty"></p>
+        <br />
+        <input
+          type="button"
+          name=""
+          value="Add ingredients"
+          id="addingredients"
+        />
+        <br /><br />
+        <label><b>Enter Recipe :</b></label> <br /><br />
+        <input
+          type="text"
+          name=""
+          id="recipe"
+          placeholder="Enter Recipe here :"
+        />
+        <p id="dishrecipe1"></p>
+
+        <label><b>Select Image here :</b></label
+        ><br /><br />
+        <input type="file" name="" id="selectimage" /> <br />
+        <p id="dishimage"></p>
+        <input type="button" name="" id="update" value="Update" />
+
+        <input
+          type="submit"
+          onclick="event.preventDefault()"
+          name=""
+          id="submit"
+        />
+        <input
+          type="button"
+          name=""
+          id="allrecord"
+          onclick="showal()"
+          value="All Record"
+        />
+      </div>
+
+      <hr />
+      <div id="menu">
+        <label for=""><b>Today's Menu :</b></label>
+        <ol id="availabledishs"></ol>
+        <input
+          type="search"
+          name=""
+          id="btn1"
+          onkeydown="serchbar()"
+          placeholder="Enter Dish Name For Search :"
+        />
+        <!-- <input type="button" name="" id="search" value="Search" /> -->
+      </div>
+      <div id="tabldiv">
+        <!-- 			<table id="tablbody">
+				<thead>
+					<label><b>Dish Details :</b></label>
+					<th>SNo.</th>
+					<th>Dish Name</th>
+					<th>Image Path</th>
+					<th>Ingredient Name</th>
+					<th>Quantity</th>
+				</thead>
+				<tbody id="result"></tbody>
+			</table> -->
+        <center>
+          <!-- <label for="" style="font-weight: bold">Available Dish's</label> -->
+        </center>
+        <label><b>Dish Name Is :</b></label>
+        <p id="namedish"></p>
+        <br />
+        <label><b>Dish Image :</b></label>
+        <img src="" id="displayimage" accept="image/*" /> <br /><br />
+        <label for="" id="path"></label><br /><br />
+        <label><b>Recipe :</b></label>
+        <p id="dishrecipe"></p>
+        <br />
+        <h3>Ingredients :</h3>
+        <ol id="result"></ol>
+
+        <input type="button" name="" id="edit1" value="Edit" />
+        <!-- <input type="button" name="" id="addingre" value="Add Ingredients" title="Add mre Ingredients"> -->
+        <input type="button" name="" id="previous" value="<" title="Previous" />
+        <input type="button" name="" id="next" value=">" title="Next" />
+        <input
+          type="button"
+          name=""
+          id="delete"
+          value="Delete"
+          title="Delete Dish"
+        />
+        <input type="button" name="" id="cancel" value="Cancel" />
+      </div>
+    </form>
+  </body>
+  <script src="js/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+  <script type="text/javascript" src="js/again_food_chef.js"></script>
+</html>

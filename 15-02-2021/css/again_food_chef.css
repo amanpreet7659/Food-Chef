@@ -1,0 +1,68 @@
+body {
+  background-image: url("images.jpeg");
+}
+#firstdiv {
+  width: 45%;
+  /* border: 2px green solid; */
+}
+#tabldiv {
+  /* border: 2px khaki solid; */
+  /* float: right; */
+  margin-left: 30%;
+}
+#menu {
+  width: 29.5%;
+  float: left;
+  /* border: 2px green solid; */
+}
+#tablbody,
+th,
+td {
+  border-collapse: collapse;
+  /* border: 2px blue solid; */
+}
+#displayimage {
+  width: 40%;
+  height: auto;
+}
+#dish {
+  /* margin-left: 48%; */
+}
+#ingre {
+  /* margin-left: 24%; */
+}
+#ingreqty {
+  /* margin-left: 70%; */
+}
+#addingredients {
+  /* margin-left: 70%; */
+}
+#recipe {
+  /* margin-left: 52.5%; */
+}
+#selectimage {
+  /* margin-left: 34%; */
+}
+#submit {
+  /* margin-left: 70%; */
+}
+#tabldiv {
+  display: none;
+}
+h1 {
+  color: green;
+}
+#btnsrch {
+  float: left;
+}
+#update,
+#cancel {
+  display: none;
+}
+#dishname,
+#dishingre,
+#dishqty,
+#dishrecipe1,
+#dishimage {
+  color: red;
+}
